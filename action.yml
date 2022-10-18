@@ -14,8 +14,9 @@ runs:
   using: "composite"
   steps:
     - id: migrations_check
-      run: echo "migrations_check=$(curl -v GET ${{ inputs.url }}/ht/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4)" >> $GITHUB_OUTPUT
+      run: echo "migrations_check=$(curl -v GET ${{ inputs.url }}/ht/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4)" | if [ "$migrations_check" = "working" ]; then echo "true"; else echo "false"; fi >> $GITHUB_OUTPUT
       shell: bash
+
 
     - id: status_code
       run: |
