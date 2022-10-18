@@ -1,0 +1,22 @@
+name: "API and migrations status"
+description: "Check migrations and health"
+inputs:
+  url:  # id of input
+    description: 'URL Website'
+outputs:
+  code:
+    description: "Status Code"
+    value: ${{ steps.status_code.outputs.status_code }}
+  migrations_check:
+    description: "Migrations Check"
+    value: ${{ steps.migrations_check.outputs.migrations_check }}
+runs:
+  using: "composite"
+  steps:
+    - id: status_code
+      run: curl -w "Type: %{content_type}\nCode: %{response_code}\n" ${{ inputs.url }}/ht/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2 >> $GITHUB_OUTPUT
+      shell: bash
+
+    - id: migrations_check
+      run: curl -v GET ${{ inputs.url }}/ht/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4 >> $GITHUB_OUTPUT
+      shell: bash
