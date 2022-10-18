@@ -13,10 +13,11 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - id: status_code
-      run: curl -w "Type: %{content_type}\nCode: %{response_code}\n" ${{ inputs.url }}/ht/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2 >> $GITHUB_OUTPUT
-      shell: bash
-
     - id: migrations_check
       run: curl -v GET ${{ inputs.url }}/ht/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4 >> $GITHUB_OUTPUT
+      shell: bash
+
+    - id: status_code
+      run: |
+        "curl -w 'Type: %{content_type}\nCode: %{response_code}\n' ${{ inputs.url }}/ht/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2" >> $GITHUB_OUTPUT
       shell: bash
