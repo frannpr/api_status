@@ -14,12 +14,17 @@ runs:
   using: "composite"
   steps:
     - id: migrations_check
-      run: echo "migrations_check=$(curl -v GET ${{ inputs.url }}/ht/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4)" | if [ "$migrations_check" = "working" ]; then echo "true"; else echo "false"; fi >> $GITHUB_OUTPUT
+      run: | 
+        migrations_check=$(curl -v GET ${{ inputs.url }}/ht/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4)
+        if [ "$migrations_check" = "working" ]; then echo "true"; else echo "false"; fi >> $GITHUB_OUTPUT
       shell: bash
 
 
     - id: status_code
       run: |
-        echo "status_code=$(curl -w 'Type: %{content_type}\nCode: %{response_code}\n' ${{ inputs.url }}/ht/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2)" >> $GITHUB_OUTPUT
+        status_code=$(curl -w 'Type: %{content_type}\nCode: %{response_code}\n' ${{ inputs.url }}/ht/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2)"
+        if [ "$status_code" = "200" ]; then echo "true"; else echo "false"; fi >> $GITHUB_OUTPUT
       shell: bash
 
+
+if [ curl -v GET https://api-dev.getvesto.com/ht/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4 = "working" ]; then echo "true"; else echo "false"; fi
