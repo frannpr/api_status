@@ -22,6 +22,6 @@ runs:
 
     - id: status_code
       run: |
-        code=$(curl -w 'Type: %{content_type}\nCode: %{response_code}\n' ${{ inputs.url }}/ht/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2)"
+        code=$(curl -w 'Type: %{content_type}\nCode: %{response_code}\n' ${{ inputs.url }}/ht/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2)
         echo "status_code=$(if [ "$code" = "200" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
       shell: bash
