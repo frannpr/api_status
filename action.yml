@@ -32,42 +32,42 @@ runs:
       shell: bash
 
     - name: Notify to Slack channel
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: ${{ inputs.CHANNEL_ID}}
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "New deployment ready :rocket:"
-                  }
-                },
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Status:*\n ${{ steps.foo.outputs.CODE }}"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Environment:*\n ${{ github.ref_name }}"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Migrations:*\n ${{ steps.foo.outputs.MIGRATIONS_CHECK }}"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Changes:*\n ${{ github.event.head_commit.message }}"
-                    }
-                  ]
+      uses: slackapi/slack-github-action@v1.23.0
+      with:
+        channel-id: ${{ inputs.CHANNEL_ID}}
+        payload: |
+          {
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "New deployment ready :rocket:"
                 }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ inputs.SLACK_BOT_TOKEN}}
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Status:*\n ${{ steps.foo.outputs.CODE }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Environment:*\n ${{ github.ref_name }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Migrations:*\n ${{ steps.foo.outputs.MIGRATIONS_CHECK }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Changes:*\n ${{ github.event.head_commit.message }}"
+                  }
+                ]
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ inputs.SLACK_BOT_TOKEN}}
 
