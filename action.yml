@@ -50,7 +50,7 @@ runs:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Status:*\n ${{ steps.foo.outputs.code }}"
+                      "text": "*Status:*\n ${{ steps.foo.outputs.CODE }}"
                     },
                     {
                       "type": "mrkdwn",
@@ -58,7 +58,7 @@ runs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Migrations:*\n ${{ steps.foo.outputs.migrations_check }}"
+                      "text": "*Migrations:*\n ${{ steps.foo.outputs.MIGRATIONS_CHECK }}"
                     },
                     {
                       "type": "mrkdwn",
