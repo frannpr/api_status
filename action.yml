@@ -14,9 +14,20 @@ outputs:
   MIGRATIONS_CHECK:
     description: "Migrations Check"
     value: ${{ steps.migrations_check.outputs.migrations_check }}
+  API_HEALTH:
+    description: "API Health"
+    value: ${{ steps.api_health.outputs.api_health }}
 runs:
   using: "composite"
   steps:
+    - name: API Health
+      id: api_health
+      run: |
+        if ! code=$(curl -w 'Type: %{content_type}\nCode: %{response_code}\n' ${{ inputs.URL }}/ht/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2); then echo "Failure :fire:"; fi
+        if ! check=$(curl -v GET ${{ inputs.URL }}/ht/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4); then echo "Failure :fire:"; fi
+        echo "api_health=$(if [ "$code" != "200" ] && [ "$check" != "working"  ]; then echo "New deployment failed :fire:"; else echo "New deployment ready :rocket:"; fi)" >> $GITHUB_OUTPUT
+      shell: bash
+
     - name: API Status Code
       id: status_code
       run: |
@@ -42,7 +53,7 @@ runs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "New deployment ready :rocket:"
+                  "text": "*${{ steps.api_health.outputs.api_health }}*"
                 }
               },
               {
