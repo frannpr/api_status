@@ -23,22 +23,22 @@ runs:
     - name: API Health
       id: api_health
       run: |
-        if ! code=$(curl -w 'Type: %{content_type}\nCode: %{response_code}\n' ${{ inputs.URL }}/ht/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2); then echo "Failure :fire:"; fi
-        if ! check=$(curl -v GET ${{ inputs.URL }}/ht/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4); then echo "Failure :fire:"; fi
+        if ! code=$(curl -w 'Type: %{content_type}\nCode: %{response_code}\n' ${{ inputs.URL }}/health_check/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2); then echo "Failure :fire:"; fi
+        if ! check=$(curl -v GET ${{ inputs.URL }}/health_check/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4); then echo "Failure :fire:"; fi
         echo "api_health=$(if [ "$code" != "200" ] && [ "$check" != "working"  ]; then echo "New deployment failed :fire:"; else echo "New deployment ready :rocket:"; fi)" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: API Status Code
       id: status_code
       run: |
-        if ! code=$(curl -w 'Type: %{content_type}\nCode: %{response_code}\n' ${{ inputs.URL }}/ht/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2); then echo "Failure :fire:"; fi
+        if ! code=$(curl -w 'Type: %{content_type}\nCode: %{response_code}\n' ${{ inputs.URL }}/health_check/ | grep -w Code | sed "s/ //g" | cut -d ":" -f 2); then echo "Failure :fire:"; fi
         echo "status_code=$(if [ "$code" = "200" ]; then echo "Completed :white_check_mark:"; else echo "Failure :fire:"; fi)" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: API Migrations Check
       id: migrations_check
       run: | 
-        if ! check=$(curl -v GET ${{ inputs.URL }}/ht/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4); then echo "Failure :fire:"; fi
+        if ! check=$(curl -v GET ${{ inputs.URL }}/health_check/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4); then echo "Failure :fire:"; fi
         echo "migrations_check=$(if [ "$check" = "working" ]; then echo "Completed :white_check_mark:"; else echo "Failure :fire:"; fi)" >> $GITHUB_OUTPUT
       shell: bash
 
