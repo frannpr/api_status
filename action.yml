@@ -81,5 +81,5 @@ runs:
           }
       env:
         SLACK_BOT_TOKEN: ${{ inputs.SLACK_BOT_TOKEN}}
-        BODY: ${{"*Changes:*\n" || toJSON(github.event.head_commit.message) }}
+        BODY: "*Changes:*\n" ${{toJSON(github.event.head_commit.message) }}
 
