@@ -76,8 +76,7 @@ runs:
                     "text": "*Changes:*\n"
                   },
                   {
-                    "type": "mrkdwn",
-                    "text": " "
+                    "type": "mrkdwn"
                   },
                   {
                     "type": "mrkdwn",
