@@ -73,8 +73,8 @@ runs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Changes:*\n" 
-                    ${{ toJSON(github.event.head_commit.message) }}
+                    ${{ toJSON("text": "*Changes:*\n" ${{ github.event.head_commit.message }}) }}
+                    
                   }
                 ]
               }
