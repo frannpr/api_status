@@ -80,7 +80,7 @@ runs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": ${{toJSON(github.event.head_commit.message) }}
+                    "text": ${{toJSON(github.event.head_commit[0].message) }}
                   }
                 ]
               }
