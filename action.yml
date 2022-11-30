@@ -76,11 +76,8 @@ runs:
                     "text": "*Changes:*\n"
                   },
                   {
-                    "type": "mrkdwn"
-                  },
-                  {
                     "type": "mrkdwn",
-                    "text": ${{toJSON(github.event.head_commit[0].message) }}
+                    "text": ${{ github.event.pull_request.title }}
                   }
                 ]
               }
