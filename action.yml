@@ -73,11 +73,7 @@ runs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Changes:*\n"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "${{ github.event.pull_request.title }}"
+                    "text": "*Changes:*\n ${{ github.event.pull_request.title }}"
                   }
                 ]
               }
