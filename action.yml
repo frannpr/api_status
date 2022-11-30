@@ -77,7 +77,7 @@ runs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": ${{ github.event.pull_request.title }}
+                    "text": "${{ github.event.pull_request.title }}"
                   }
                 ]
               }
