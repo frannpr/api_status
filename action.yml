@@ -21,7 +21,7 @@ outputs:
     value: ${{ steps.api_health.outputs.api_health }}
   GITHUB_MERGED_TITLE:
     description: "Github merged title"
-    value: ${{ steps.api_health.outputs.api_health }}
+    value: ${{ steps.get_merged_title.outputs.get_merged_title }}
 runs:
   using: "composite"
   steps:
