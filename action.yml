@@ -7,6 +7,8 @@ inputs:
     description: "Channel ID"
   SLACK_BOT_TOKEN:
     description: "Slack bot token"
+  GITHUB_TOKEN:
+    description: "Github token generated"
 outputs:
   CODE:
     description: "Status Code"
@@ -43,7 +45,7 @@ runs:
       shell: bash
     - name: Obtener título del merge
       run: |
-        EVENT_TYPE=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -X GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} | jq -r .title)
+        EVENT_TYPE=$(curl -H "Authorization: token ${{ inputs.GITHUB_TOKEN }}" -X GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} | jq -r .title)
         echo "Título del merge: $EVENT_TYPE"
         echo "::set-env name=EVENT_TYPE::$EVENT_TYPE"
       shell: bash
