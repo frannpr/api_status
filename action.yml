@@ -85,7 +85,7 @@ runs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Changes:*\n ${{ env.EVENT_TYPE }}"
+                    "text": "*Changes:*\n ${{ steps.get_merged_title.outputs.get_merged_title }}"
                   }
                 ]
               }
