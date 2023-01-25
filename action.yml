@@ -51,7 +51,7 @@ runs:
       run: |
         MERGED_TITLE=$(curl -H "Authorization: token ${{ inputs.GITHUB_TOKEN }}" -X GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} | jq -r .title | tr '\n' ' ')
         message=$(echo $MERGED_TITLE | tr '\n' ' ')
-        echo "$message" >> $GITHUB_OUTPUT
+        echo "text<<EOF"$'\n'"$message"$'\n'EOF >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Notify to Slack channel
