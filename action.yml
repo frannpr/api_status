@@ -21,7 +21,7 @@ outputs:
     value: ${{ steps.api_health.outputs.api_health }}
   GITHUB_MERGED_TITLE:
     description: "Github merged title"
-    value: ${{ steps.get_merged_title.outputs.get_merged_title }}
+    value: ${{ steps.github_merged_title.outputs.github_merged_title }}
 runs:
   using: "composite"
   steps:
@@ -49,7 +49,8 @@ runs:
     - name: Get merged title
       id: get_merged_title
       run: |
-        echo "github_merged_title">> $GITHUB_OUTPUT
+        github_merged_title=$(curl -H "Authorization: token ${{ inputs.GITHUB_TOKEN }}" -X GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} | jq -r .title)
+        echo "github_merged_title=$github_merged_title" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Notify to Slack channel
@@ -83,7 +84,7 @@ runs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Changes:*\n ${{ steps.get_merged_title.outputs.get_merged_title }}"
+                    "text": "*Changes:*\n ${{ steps.github_merged_title.outputs.github_merged_title }}"
                   }
                 ]
               }
