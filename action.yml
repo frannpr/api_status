@@ -49,7 +49,8 @@ runs:
     - name: Get merged title
       id: get_merged_title
       run: |
-        echo "github_merged_title=$(curl -H "Authorization: token ${{ inputs.GITHUB_TOKEN }}" -X GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} | jq -r .title)" >> $GITHUB_OUTPUT
+        github_merged_title=$(curl -H "Authorization: token ${{ inputs.GITHUB_TOKEN }}" -X GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} | jq -r .title)
+        echo "github_merged_title">> $GITHUB_OUTPUT
       shell: bash
 
     - name: Notify to Slack channel
