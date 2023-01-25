@@ -19,6 +19,9 @@ outputs:
   API_HEALTH:
     description: "API Health"
     value: ${{ steps.api_health.outputs.api_health }}
+  GITHUB_MERGED_TITLE:
+    description: "Github merged title"
+    value: ${{ steps.api_health.outputs.api_health }}
 runs:
   using: "composite"
   steps:
@@ -43,11 +46,10 @@ runs:
         if ! check=$(curl -v GET ${{ inputs.URL }}/health_check/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4); then echo "Failure :fire:"; fi
         echo "migrations_check=$(if [ "$check" = "working" ]; then echo "Completed :white_check_mark:"; else echo "Failure :fire:"; fi)" >> $GITHUB_OUTPUT
       shell: bash
-    - name: Obtener título del merge
+    - name: Get merged title
+      id: get_merged_title
       run: |
-        EVENT_TYPE=$(curl -H "Authorization: token ${{ inputs.GITHUB_TOKEN }}" -X GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} | jq -r .title)
-        echo "Título del merge: $EVENT_TYPE"
-        echo "::set-env name=EVENT_TYPE::$EVENT_TYPE"
+        curl -H "Authorization: token ${{ inputs.GITHUB_TOKEN }}" -X GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} | jq -r .title >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Notify to Slack channel
