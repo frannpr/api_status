@@ -43,8 +43,8 @@ runs:
     - name: API Migrations Check
       id: migrations_check
       run: | 
-        if ! check=$(curl -v GET ${{ inputs.URL }}/health_check/\?format\=json | grep -w MigrationsHealthCheck | cut -d \" -f 4); then echo "Failure :fire:"; fi
-        echo "migrations_check=$(if [ "$check" = "working" ]; then echo "Completed :white_check_mark:"; else echo "Failure :fire:"; fi)" >> $GITHUB_OUTPUT
+        if ! check=$(curl -sS https://api-dev.greenmarblesolutions.com/health_check/\?format\=json | jq -r '.info.db.status'); then echo "Failure :fire:"; fi
+        echo "migrations_check=$(if [ "$check" = "up" ]; then echo "Completed :white_check_mark:"; else echo "Failure :fire:"; fi)" >> $GITHUB_OUTPUT
       shell: bash
     - name: Get merged title
       id: github_merged_title
